@@ -87,9 +87,7 @@ function SingleProduct() {
             {/* 主圖 */}
             <div className="mb-3">
               <img
-                src={
-                  mainImage || singleProduct.imageUrl || "../public/LOGO.jpg"
-                }
+                src={mainImage || singleProduct.imageUrl || "/LOGO.jpg"}
                 alt={singleProduct.title || "商品圖片"}
                 className="img-fluid rounded shadow"
               />
