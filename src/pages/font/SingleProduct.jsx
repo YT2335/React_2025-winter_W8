@@ -1,4 +1,5 @@
 import axios from "axios";
+import logo from "@/assets/LOGO.jpg";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
@@ -87,7 +88,7 @@ function SingleProduct() {
             {/* 主圖 */}
             <div className="mb-3">
               <img
-                src={mainImage || singleProduct.imageUrl || "/LOGO.jpg"}
+                src={mainImage || singleProduct.imageUrl || logo}
                 alt={singleProduct.title || "商品圖片"}
                 className="img-fluid rounded shadow"
               />
