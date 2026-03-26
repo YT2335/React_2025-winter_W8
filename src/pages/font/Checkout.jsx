@@ -92,14 +92,15 @@ function Checkout() {
           />
 
           <div className="card-img-overlay container d-flex flex-column justify-content-center align-items-center">
-            <h1 className="display-6 display-md-4 fw-bold">Checkout</h1>
+            <h1 className="display-6 fs-md-4 fw-bold">Checkout</h1>
           </div>
         </div>
       </div>
       {/* 購買資訊 */}
       <div className="container py-5">
         <h2 className="fw-bold text-primary mb-4">購物清單</h2>
-        <table className="table table-hover">
+        {/* 桌機版表格 */}
+        <table className="table table-hover d-none d-md-table">
           <thead>
             <tr className="text-center">
               <th>商品圖片</th>
@@ -145,11 +146,43 @@ function Checkout() {
             </tr>
           </tfoot>
         </table>
+        {/* 手機版卡片 */}
+        <div className="d-md-none">
+          {cart?.carts.map((item) => (
+            <div key={item.id} className="card mb-3">
+              <div className="row g-0 align-items-center">
+                <div className="col-4">
+                  <img
+                    src={item.product.imageUrl}
+                    alt={item.product.title}
+                    className="img-fluid rounded"
+                  />
+                </div>
+                <div className="col-8">
+                  <div className="card-body p-2">
+                    <h6 className="card-title">{item.product.title}</h6>
+                    <p className="mb-1">數量：{item.qty}</p>
+                    <p className="mb-1">
+                      單價：NT {item.product.price.toLocaleString()}
+                    </p>
+                    <p className="mb-0">
+                      小計：NT{" "}
+                      {(item.qty * item.product.price).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="text-end fw-bold mb-3">
+            總計 NT {cart?.final_total?.toLocaleString() || 0}
+          </div>
+        </div>
       </div>
       {/* 表單輸入 */}
       <div className="container py-5">
         <div className="row justify-content-center">
-          <form className="col-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="col-lg-6" onSubmit={handleSubmit(onSubmit)}>
             {/* 收件資訊 */}
             <h2 className="fw-bold text-primary">收件資訊</h2>
             <div className="mb-3">

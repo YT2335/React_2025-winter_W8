@@ -77,7 +77,7 @@ function Cart() {
           />
 
           <div className="card-img-overlay container d-flex flex-column justify-content-center align-items-center">
-            <h1 className="display-6 display-md-4 fw-bold">Cart</h1>
+            <h1 className="display-6 fs-md-4 fw-bold">Cart</h1>
           </div>
         </div>
       </div>
@@ -91,99 +91,170 @@ function Cart() {
             </NavLink>
           </div>
         ) : (
-          <div className="container py-5">
-            <table className="table table-hover">
-              <thead>
-                <tr className="text-center">
-                  <th scope="col">商品圖片</th>
-                  <th scope="col">商品名稱</th>
-                  <th scope="col">數量</th>
-                  <th scope="col">單價</th>
-                  <th scope="col">刪除</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cart?.carts.map((cartItem) => (
-                  <tr className="align-middle text-center" key={cartItem.id}>
-                    <td className="fixed" style={{ width: "120px" }}>
+          <>
+            {/* 桌面版表格 */}
+            <div className="table-responsive d-none d-md-block">
+              <table className="table table-hover align-middle text-center">
+                <thead>
+                  <tr>
+                    <th scope="col">商品圖片</th>
+                    <th scope="col">商品名稱</th>
+                    <th scope="col">數量</th>
+                    <th scope="col">單價</th>
+                    <th scope="col">刪除</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart?.carts.map((cartItem) => (
+                    <tr key={cartItem.id}>
+                      <td style={{ maxWidth: "120px" }}>
+                        <img
+                          src={cartItem.product.imageUrl}
+                          alt={cartItem.product.title}
+                          className="img-fluid rounded"
+                        />
+                      </td>
+                      <td>{cartItem.product.title}</td>
+                      <td style={{ minWidth: "120px" }}>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <button
+                            className="btn btn-outline-secondary btn-sm me-1"
+                            onClick={() => {
+                              const newQty = cartItem.qty - 1;
+                              if (newQty <= 0) delSingleCart(cartItem.id);
+                              else
+                                updateCart(
+                                  cartItem.id,
+                                  cartItem.product_id,
+                                  newQty,
+                                );
+                            }}
+                          >
+                            −
+                          </button>
+                          <input
+                            type="text"
+                            className="form-control form-control-sm text-center"
+                            style={{ width: "50px" }}
+                            value={cartItem.qty}
+                            onChange={(e) => {
+                              const value = Number(e.target.value);
+                              if (value <= 0) delSingleCart(cartItem.id);
+                              else
+                                updateCart(
+                                  cartItem.id,
+                                  cartItem.product_id,
+                                  value,
+                                );
+                            }}
+                          />
+                          <button
+                            className="btn btn-outline-secondary btn-sm ms-1"
+                            onClick={() =>
+                              updateCart(
+                                cartItem.id,
+                                cartItem.product_id,
+                                cartItem.qty + 1,
+                              )
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td>NT {cartItem.product.price.toLocaleString()}</td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => delSingleCart(cartItem.id)}
+                        >
+                          <i className="bi bi-trash3"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="5" className="text-end fw-bold">
+                      總計 NT$ {(cart?.final_total || 0).toLocaleString()}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            {/* 手機版卡片 */}
+            <div className="d-md-none">
+              {cart?.carts.map((cartItem) => (
+                <div key={cartItem.id} className="card mb-3">
+                  <div className="row g-0 align-items-center">
+                    <div className="col-4">
                       <img
                         src={cartItem.product.imageUrl}
                         alt={cartItem.product.title}
-                        className="img-fluid"
+                        className="img-fluid rounded"
                       />
-                    </td>
-                    <td>{cartItem.product.title}</td>
-                    <td className="fixed" style={{ width: "150px" }}>
-                      <div className="btn-group" role="group">
-                        <button
-                          className="btn btn-outline-secondary btn-sm"
-                          onClick={() => {
-                            const newQty = cartItem.qty - 1;
-                            if (newQty <= 0) {
-                              delSingleCart(cartItem.id);
-                            } else {
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body p-2">
+                        <h6 className="card-title">{cartItem.product.title}</h6>
+                        <p className="mb-1">
+                          NT {cartItem.product.price.toLocaleString()}
+                        </p>
+                        <div className="d-flex align-items-center mb-2">
+                          <button
+                            className="btn btn-outline-secondary btn-sm me-1"
+                            onClick={() => {
+                              const newQty = cartItem.qty - 1;
+                              if (newQty <= 0) delSingleCart(cartItem.id);
+                              else
+                                updateCart(
+                                  cartItem.id,
+                                  cartItem.product_id,
+                                  newQty,
+                                );
+                            }}
+                          >
+                            −
+                          </button>
+                          <input
+                            type="text"
+                            className="form-control form-control-sm text-center"
+                            style={{ width: "50px" }}
+                            value={cartItem.qty}
+                            readOnly
+                          />
+                          <button
+                            className="btn btn-outline-secondary btn-sm ms-1"
+                            onClick={() =>
                               updateCart(
                                 cartItem.id,
                                 cartItem.product_id,
-                                newQty,
-                              );
+                                cartItem.qty + 1,
+                              )
                             }
-                          }}
-                        >
-                          −
-                        </button>
-                        <input
-                          type="text"
-                          className="form-control form-control-sm text-center quantity-input"
-                          value={cartItem.qty}
-                          onChange={(e) => {
-                            const value = Number(e.target.value);
-                            if (value <= 0) {
-                              delSingleCart(cartItem.id);
-                            } else {
-                              updateCart(
-                                cartItem.id,
-                                cartItem.product_id,
-                                value,
-                              );
-                            }
-                          }}
-                        />
+                          >
+                            +
+                          </button>
+                        </div>
                         <button
-                          className="btn btn-outline-secondary btn-sm"
-                          onClick={() =>
-                            updateCart(
-                              cartItem.id,
-                              cartItem.product_id,
-                              cartItem.qty + 1,
-                            )
-                          }
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => delSingleCart(cartItem.id)}
                         >
-                          +
+                          <i className="bi bi-trash3"></i> 刪除
                         </button>
                       </div>
-                    </td>
-                    <td>NT {cartItem.product.price.toLocaleString()}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => delSingleCart(cartItem.id)}
-                      >
-                        <i className="bi bi-trash3"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td className="text-end" colSpan="5">
-                    總計 NT$ {(cart?.final_total || 0).toLocaleString()}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="text-end fw-bold mb-3">
+                總計 NT$ {(cart?.final_total || 0).toLocaleString()}
+              </div>
+            </div>
+
+            {/* 共用按鈕 */}
             <div className="text-end">
               <NavLink to="/products" className="btn btn-outline-primary me-2">
                 繼續選購
@@ -192,7 +263,7 @@ function Cart() {
                 下一步
               </NavLink>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>
