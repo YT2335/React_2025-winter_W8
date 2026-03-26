@@ -43,6 +43,16 @@ function Navbar() {
             CINDY CRYSTAL
           </NavLink>
 
+          <div className="d-flex align-items-center d-lg-none ms-auto">
+            <NavLink className="nav-link me-3" to="/cart">
+              <i className="bi bi-handbag fs-4"></i>
+            </NavLink>
+
+            <NavLink className="nav-link me-2" to="/admin/adminlogin">
+              <i className="bi bi-person fs-4"></i>
+            </NavLink>
+          </div>
+
           {/* 漢堡按鈕 */}
           <button
             className="navbar-toggler"

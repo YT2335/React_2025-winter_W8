@@ -49,7 +49,9 @@ function AdminLayout() {
       <header>
         <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light border border-bottom">
           <div className="container">
-            <h1 className="navbar-brand mb-0">CINDY CRYSTAL</h1>
+            <NavLink className="navbar-brand" to="/">
+              CINDY CRYSTAL
+            </NavLink>
             <button
               className="navbar-toggler"
               type="button"

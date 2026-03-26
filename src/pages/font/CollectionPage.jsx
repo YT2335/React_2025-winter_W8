@@ -32,9 +32,10 @@ function CollectionPage() {
       );
 
       setProducts(response.data.products);
-      setPagination(response.data.pagination);
     } catch (error) {
-      dispatch(createAsyncMessage(error.response.data));
+      dispatch(
+        createAsyncMessage(error.response?.data || { message: error.message }),
+      );
     }
   };
 

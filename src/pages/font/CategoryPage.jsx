@@ -24,7 +24,7 @@ function CategoryPage() {
       setProducts(response.data.products);
       setPagination(response.data.pagination);
     } catch (error) {
-      dispatch(createAsyncMessage(error.response.data));
+      createAsyncMessage(error.response?.data || { message: error.message });
     }
   };
 
