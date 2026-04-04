@@ -78,7 +78,11 @@ function Checkout() {
   };
 
   useEffect(() => {
-    getCart();
+    const fetchCart = async () => {
+      await getCart();
+    };
+
+    fetchCart();
   }, []);
 
   return (

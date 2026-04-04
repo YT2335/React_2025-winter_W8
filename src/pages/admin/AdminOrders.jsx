@@ -32,20 +32,32 @@ function AdminOrders() {
   };
 
   useEffect(() => {
-    // 從 cookie 取出 token
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("crystalToken="))
-      ?.split("=")[1];
+    const init = async () => {
+      // 從 cookie 取出 token
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("crystalToken="))
+        ?.split("=")[1];
 
-    if (token) {
+      if (!token) {
+        navigate("/admin/adminlogin");
+        return;
+      }
+
       axios.defaults.headers.common.Authorization = token;
-      getOrders();
-    } else {
-      // 沒 token → 導回登入
-      navigate("/admin/adminlogin");
-    }
-  }, []);
+
+      try {
+        const res = await axios.get(`${BASE_URL}/api/${API_PATH}/admin/orders`);
+
+        setOrders(res.data.orders);
+        setPagination(res.data.pagination);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    init();
+  }, [navigate]);
 
   //日期轉換
   const formatDate = (timestamp) => {

@@ -24,13 +24,19 @@ function CategoryPage() {
       setProducts(response.data.products);
       setPagination(response.data.pagination);
     } catch (error) {
-      createAsyncMessage(error.response?.data || { message: error.message });
+      dispatch(
+        createAsyncMessage(error.response?.data || { message: error.message }),
+      );
     }
   };
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    const fetchProducts = async () => {
+      await getProducts();
+    };
+
+    fetchProducts();
+  }, [categoryName]);
 
   const filterProducts = products.filter(
     (product) => product.category === categoryName,

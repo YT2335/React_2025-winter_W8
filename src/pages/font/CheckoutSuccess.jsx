@@ -19,7 +19,7 @@ function CheckoutSuccess() {
           `${BASE_URL}/api/${API_PATH}/order/${orderId}`,
         );
         setOrderData(res.data.order);
-      } catch (err) {
+      } catch {
         alert("訂單取得失敗，請稍後再試");
         setError(true);
       } finally {

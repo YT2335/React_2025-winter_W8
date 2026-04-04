@@ -23,7 +23,7 @@ export const checkAdmin = async (BASE_URL) => {
   try {
     await axios.post(`${BASE_URL}/api/user/check`);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 };

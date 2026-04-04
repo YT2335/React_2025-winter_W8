@@ -10,6 +10,19 @@ function AdminLayout() {
   const [token, setToken] = useState(getToken() || "");
   const navigate = useNavigate();
 
+  const logout = () => {
+    // 刪 cookie + axios header
+    document.cookie =
+      "crystalToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    delete axios.defaults.headers.common.Authorization;
+
+    // 清掉 state
+    setToken("");
+
+    // 導回登入頁
+    navigate("/admin/adminlogin");
+  };
+
   useEffect(() => {
     const checkLogin = async () => {
       if (!token) {
@@ -23,26 +36,17 @@ function AdminLayout() {
       try {
         // 驗證 token 是否有效
         await axios.post(`${BASE_URL}/api/user/check`);
-      } catch (error) {
-        logout();
+      } catch {
+        document.cookie =
+          "crystalToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+        delete axios.defaults.headers.common.Authorization;
+        setToken("");
+        navigate("/admin/adminlogin");
       }
     };
 
     checkLogin();
   }, [token, navigate]);
-
-  const logout = () => {
-    // 刪 cookie + axios header
-    document.cookie =
-      "crystalToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-    delete axios.defaults.headers.common.Authorization;
-
-    // 清掉 state
-    setToken("");
-
-    // 導回登入頁
-    navigate("/admin/adminlogin");
-  };
 
   return (
     <div className="d-flex flex-column">

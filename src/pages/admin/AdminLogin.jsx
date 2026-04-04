@@ -29,7 +29,11 @@ function AdminLogin() {
       const { token, expired } = loginRes.data;
 
       // 把 token 存到 cookie
-      document.cookie = `crystalToken=${token}; expires=${new Date(expired).toUTCString()}; path=/`;
+      const setCookie = () => {
+        document.cookie = `crystalToken=${token}; expires=${new Date(expired).toUTCString()}; path=/`;
+      };
+
+      setCookie();
 
       // 設定 axios 預設 header (之後所有 axios request 都會自動帶上)
       setAuthToken();

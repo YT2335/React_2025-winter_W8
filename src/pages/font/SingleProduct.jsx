@@ -19,17 +19,6 @@ function SingleProduct() {
 
   const dispatch = useDispatch();
 
-  const getSingleProduct = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/api/${API_PATH}/product/${id}`,
-      );
-      setSingleProduct(response.data.product);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   //加入購物車
   const addCart = async (id, qty) => {
     try {
@@ -47,14 +36,19 @@ function SingleProduct() {
   };
 
   useEffect(() => {
+    const getSingleProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/${API_PATH}/product/${id}`,
+        );
+        setSingleProduct(response.data.product);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+
     getSingleProduct();
   }, [id]);
-
-  useEffect(() => {
-    if (singleProduct?.imageUrl) {
-      setMainImage(singleProduct.imageUrl);
-    }
-  }, [setSingleProduct]);
 
   //立即購買
   const handleBuyNow = async () => {
@@ -70,11 +64,10 @@ function SingleProduct() {
       navigate("/checkout");
     } catch (error) {
       dispatch(createAsyncMessage(error.response.data));
-      // alert("加入購物車失敗，請稍後再試");
     }
   };
 
-  if (!singleProduct) {
+  if (!singleProduct?.id) {
     return <div className="text-center py-5">Loading...</div>;
   }
 

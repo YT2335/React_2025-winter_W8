@@ -40,7 +40,11 @@ function CollectionPage() {
   };
 
   useEffect(() => {
-    getProducts();
+    const fetchProducts = async () => {
+      await getProducts();
+    };
+
+    fetchProducts();
   }, []);
 
   const filterProducts = products.filter(

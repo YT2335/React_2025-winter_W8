@@ -58,25 +58,39 @@ function AdminProducts() {
   };
 
   useEffect(() => {
-    // 從 cookie 取出 token
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("crystalToken="))
-      ?.split("=")[1];
+    const init = async () => {
+      // 從 cookie 取出 token
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("crystalToken="))
+        ?.split("=")[1];
 
-    if (token) {
+      if (!token) {
+        navigate("/admin/adminlogin");
+        return;
+      }
+
       axios.defaults.headers.common.Authorization = token;
-      getProducts();
-    } else {
-      // 沒 token → 導回登入
-      navigate("/admin/adminlogin");
-    }
+
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/${API_PATH}/admin/products`,
+        );
+
+        setProducts(res.data.products);
+        setPagination(res.data.pagination);
+      } catch (err) {
+        dispatch(createAsyncMessage(err.response?.data));
+      }
+    };
+
+    init();
 
     // Bootstrap Modal 初始化
     productModalRef.current = new bootstrap.Modal("#productModal", {
       keyboard: false,
     });
-  }, []);
+  }, [navigate, dispatch]);
 
   const openModal = (type, product) => {
     setModalType(type);

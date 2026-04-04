@@ -28,7 +28,11 @@ function Products() {
   };
 
   useEffect(() => {
-    getProducts();
+    const fetchProducts = async () => {
+      await getProducts();
+    };
+
+    fetchProducts();
   }, []);
 
   return (

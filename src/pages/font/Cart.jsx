@@ -22,7 +22,7 @@ function Cart() {
       }
     };
     getCart();
-  }, []);
+  }, [dispatch]);
 
   //更新購物車
   const updateCart = async (cartId, product_id, qty = 1) => {

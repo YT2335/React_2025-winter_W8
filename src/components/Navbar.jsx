@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Navbar() {
+  const [openDropdown, setOpenDropdown] = useState(null);
   useEffect(() => {
     const handleClickOutside = () => {
       setOpenDropdown(null);
@@ -32,7 +33,6 @@ function Navbar() {
     },
   ];
 
-  const [openDropdown, setOpenDropdown] = useState(null);
   const [offcanvasOpen, setOffcanvasOpen] = useState(false);
 
   return (
